@@ -1,0 +1,62 @@
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+// Custom Middleware Built-in Middleware altýna MapController üstüne yazmalýyýz.
+// Use Middlewareler her request otomatik çalýþan ara kodlar. 
+app.Use(async (context, next) =>
+{
+  // RequestDelegate -> Bir sonraki middleware çalýþtýrmak için kullanýlan delegate
+  // HttpContext -> istek ile alakalý request, response ve user gibi bilgileri taþýyan istek nesnesi
+  Console.WriteLine("Request");
+
+  if(context.Request.Method == "GET")
+  {
+    Console.WriteLine("Method Get");
+  }
+
+  if (context.User.IsInRole("Admin"))
+  {
+    Console.WriteLine("Admin Rolü Var");
+  }
+
+  await next();
+
+  Console.WriteLine("Response");
+
+  if(context.Response.StatusCode == 200)
+  {
+    Console.WriteLine("Ýstek baþarýlý");
+  }
+
+});
+
+
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
+
+// Customer Middleware buraya yazýlýrsa çalýþmaz
