@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVCIntroductionApp.Models;
 
 namespace MVCIntroductionApp.Controllers
@@ -26,10 +27,42 @@ namespace MVCIntroductionApp.Controllers
       return View(vm);
     }
 
+    // SelectListItem Dropdown doldurmak için kullanılan bir tip
+    // bu tarz dropdownlad için özel bir tag helper var 
+    // <input asp-items=@ViewBag.items />
+
+    public IEnumerable<SelectListItem> getCategories()
+    {
+
+      List<CategoryDto> categories = new List<CategoryDto>
+      {
+        new CategoryDto() { Id = 1, Name = "Kategori 1" },
+        new CategoryDto() {Id = 2, Name = "Kategori 2"}
+      };
+
+      return categories.Select(x => new SelectListItem
+      {
+        Text = x.Name,
+        Value = x.Id.ToString(),
+        Disabled = false
+      }).ToList();
+    }
+
+
+    [HttpPost]
+    public IActionResult SendJsonData([FromBody] List<ProductDto> data)
+    {
+      var filteredData = data.Where(x=> x.Id == 1).ToList();
+
+
+      return Json(filteredData);
+    }
+
 
     [HttpGet]
     public IActionResult Create()
     {
+      ViewBag.categoryDrpdown = getCategories();
       return View();
     }
 
@@ -41,6 +74,9 @@ namespace MVCIntroductionApp.Controllers
     {
 
       // Eğer formdan bir veri gönderiyorsa -> Verinin doğruluğunu sunu taraflı kontrol etmemiz sağlar.
+
+      ViewBag.categoryDrpdown = getCategories();
+
       if (ModelState.IsValid)
       {
         Console.Write("Veri tabanına gönder.");

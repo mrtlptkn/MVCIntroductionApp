@@ -23,3 +23,44 @@
     <div>@item.Name</div>
   }
 </div>
+
+<button onclick="SendDataToServer()">SendDataToServer</button>
+
+@* Scriptler ile çalışmak için section Script içine scriptleri yazalım ki Layout daki akış bozulmasın *@
+
+@section Scripts {
+  <script>
+    $(document).ready(() => {
+       alert("Jquery Yüklendi");
+
+
+       const items = @Html.Raw(Json.Serialize(Model.Products))
+       console.log("items", items);
+
+
+    })
+
+
+
+    function SendDataToServer() {
+
+      const items = @Html.Raw(Json.Serialize(Model.Products))
+
+      $.ajax({
+        method:'Post',
+        contentType: 'application/json; charset=utf-8', // veriyi gönderirken contentType girelim.
+        dataType: 'json',
+        data: JSON.stringify(items), // veriyi Json Stringify yapalım
+        url:'/Product/SendJsonData',
+        success:(response) => {
+           console.log('response', response);
+        },
+        error:(xhr, status, err) => {
+          console.log('err', xhr.responseText || err);
+        }
+      })
+    }
+
+  </script>
+}
+

@@ -10,14 +10,24 @@
 <form method="post" asp-action="Create">
 @*   Formda bir hata varsa listelenir *@
   <div asp-validation-summary="All"></div>
-  <input asp-for="@Model.Name" placeholder="Ürün adı" />
+  <input type="text" asp-for="@Model.Name" placeholder="Ürün adı" />
   @* Model hatası varsa onları göster *@
   <span asp-validation-for="@Model.Name"></span>
-  <input asp-for="@Model.Price" placeholder="Ürün fiyatı" />
-  <span asp-validation-for="@Model.Name"></span>
+  <input type="number" asp-for="@Model.Price" placeholder="Ürün fiyatı" />
+  <span asp-validation-for="@Model.Price"></span>
   @* submit Formdan veri göndermek için kullanırız *@
+
+  @* Dropdown kullanımı *@
+  <select asp-items="@ViewBag.categoryDrpdown" asp-for="@Model.CategoryId"></select>
+  <span asp-validation-for="@Model.CategoryId"></span>
+
   <input type="submit" value="Send" />
 </form>
+
+@section Scripts {
+  @* Client side validation: jQuery Validation + Unobtrusive Validation *@
+  <partial name="_ValidationScriptsPartial" />
+}
 
 
 @* HTML Helper versiyonu *@
