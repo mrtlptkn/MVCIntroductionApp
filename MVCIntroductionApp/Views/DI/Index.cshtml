@@ -1,0 +1,30 @@
+﻿@* @model viewdeki veri tipini temsil eder *@
+@* @Model ise veriyi temsil eder *@
+
+@model Tuple<Guid,Guid,Guid,Guid,Guid,Guid>
+
+
+  <p>
+    Model Size: @ViewBag.ModelSize
+  </p>
+
+
+<p>
+  Transient 1: @Model.Item1
+</p>
+<p>
+  Transient 2: @Model.Item2
+</p>
+<p>
+  Scoped 1: @Model.Item3
+</p>
+<p>
+  Scoped 2: @Model.Item4
+</p>
+<p>
+  Singleton 1: @Model.Item5
+</p>
+<p>
+  Singleton 2: @Model.Item6
+</p>
+

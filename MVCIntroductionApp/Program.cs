@@ -1,7 +1,20 @@
+using MVCIntroductionApp;
+using MVCIntroductionApp.Middlewares;
+using MVCIntroductionApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<RequestLoggingMiddleware>();
+
+// Servis Register iþlemi
+// DI için yazmamýz þart.
+builder.Services.AddTransient<TransientService>();
+builder.Services.AddScoped<ScopedService>();
+builder.Services.AddSingleton<SingletonService>();
+
+
 
 var app = builder.Build();
 
@@ -51,6 +64,9 @@ app.Use(async (context, next) =>
 
 });
 
+
+//app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseRequestLogging();
 
 
 app.MapControllerRoute(

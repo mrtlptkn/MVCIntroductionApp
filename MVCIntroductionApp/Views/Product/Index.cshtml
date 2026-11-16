@@ -1,0 +1,25 @@
+﻿@model WrapperVM
+
+
+
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+
+
+<h1>Ürünler</h1>
+<ul>
+  @foreach (var item in Model.Products)
+  {
+    <li>@item.Name - @item.Price</li>
+  }
+</ul>
+
+<h1>Kategoriler</h1>
+<div>
+  @foreach (var item in Model.Categories)
+  {
+    <div>@item.Name</div>
+  }
+</div>
