@@ -1,0 +1,27 @@
+﻿@model ProductDto
+
+
+@* Form alanlarının doldurmak için asp-For tag helper kullanırız. *@
+
+@* Tag Helper versiyonu *@
+
+<div>@ViewBag.Message</div>
+
+<form method="post" asp-action="Create">
+@*   Formda bir hata varsa listelenir *@
+  <div asp-validation-summary="All"></div>
+  <input asp-for="@Model.Name" placeholder="Ürün adı" />
+  @* Model hatası varsa onları göster *@
+  <span asp-validation-for="@Model.Name"></span>
+  <input asp-for="@Model.Price" placeholder="Ürün fiyatı" />
+  <span asp-validation-for="@Model.Name"></span>
+  @* submit Formdan veri göndermek için kullanırız *@
+  <input type="submit" value="Send" />
+</form>
+
+
+@* HTML Helper versiyonu *@
+
+@* @using (Html.BeginForm()){
+  Html.TextBoxFor(x => x.Name);
+}) *@

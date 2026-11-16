@@ -1,4 +1,6 @@
-﻿namespace MVCIntroductionApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MVCIntroductionApp.Models
 {
 
   // MVC için VMler içinde kullanılacak olan nesnelere DTo deriz.
@@ -14,10 +16,9 @@
 
   public class ProductDto
   {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
-
+    public int? Id { get; set; }
+    public string? Name { get; set; }
+    public decimal? Price { get; set; }
 
   }
 

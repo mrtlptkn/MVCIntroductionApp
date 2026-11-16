@@ -7,6 +7,7 @@ namespace MVCIntroductionApp.Controllers
   // MVC Route /Product/Index -> API Routes -> api/v1/products
   public class ProductController : Controller
   {
+    [HttpGet]
     public IActionResult Index()
     {
 
@@ -24,5 +25,34 @@ namespace MVCIntroductionApp.Controllers
 
       return View(vm);
     }
+
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+      return View();
+    }
+
+    // Formdan ne göndereceğim bilgisi ProductDto dto
+    // /Product/Create
+
+    [HttpPost]
+    public IActionResult Create(ProductDto dto)
+    {
+
+      // Eğer formdan bir veri gönderiyorsa -> Verinin doğruluğunu sunu taraflı kontrol etmemiz sağlar.
+      if (ModelState.IsValid)
+      {
+        Console.Write("Veri tabanına gönder.");
+        ViewBag.Message = "Kayıt Başarılı";
+        return View();
+      }
+
+      ViewBag.Message = "Form bilgileri yanlış";
+
+      return View();
+    }
+
+
   }
 }
