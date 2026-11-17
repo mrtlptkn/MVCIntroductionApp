@@ -70,6 +70,7 @@ namespace MVCIntroductionApp.Controllers
     // /Product/Create
 
     [HttpPost]
+    //[ValidateAntiForgeryToken]
     public IActionResult Create(ProductDto dto)
     {
 
