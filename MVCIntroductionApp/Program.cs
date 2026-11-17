@@ -17,6 +17,7 @@ builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(SiteSe
 builder.Services.AddTransient<TransientService>();
 builder.Services.AddScoped<ScopedService>();
 builder.Services.AddSingleton<SingletonService>();
+builder.Services.AddScoped<ProductService>();
 
 
 
