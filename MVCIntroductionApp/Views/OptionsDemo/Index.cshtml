@@ -1,0 +1,19 @@
+@model MVCIntroductionApp.Settings.SiteSettings
+
+@{
+    ViewData["Title"] = "Options Pattern";
+}
+
+<h2>Options Pattern Örneği</h2>
+
+<h4>IOptionsSnapshot&lt;SiteSettings&gt; (istek başına)</h4>
+<ul>
+    <li>Site Adı: @Model.SiteName</li>
+    <li>Sayfa Başına Max Kayıt: @Model.MaxItemsPerPage</li>
+    <li>E-posta: @Model.Contact.Email</li>
+    <li>Telefon: @Model.Contact.Phone</li>
+    <li>Özellikler: @string.Join(", ", Model.Features)</li>
+</ul>
+
+<h4>IOptions&lt;SiteSettings&gt; (uygulama başlangıcında okunan değer)</h4>
+<p>Site Adı: @ViewBag.IOptionsSiteName</p>

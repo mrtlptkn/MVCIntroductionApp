@@ -1,0 +1,10 @@
+@model List<MVCIntroductionApp.Models.MenuItemVM>
+
+<ul class="navbar-nav flex-grow-1">
+    @foreach (var item in Model)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="@item.Controller" asp-action="@item.Action">@item.Title</a>
+        </li>
+    }
+</ul>

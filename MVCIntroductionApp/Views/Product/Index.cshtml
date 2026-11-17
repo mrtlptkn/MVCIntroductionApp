@@ -1,7 +1,5 @@
 ﻿@model WrapperVM
 
-
-
 <ul>
   <li>Item 1</li>
   <li>Item 2</li>
@@ -33,13 +31,13 @@
     $(document).ready(() => {
        alert("Jquery Yüklendi");
 
-
+       // javascript c# etkileşimi
+       // C# nesnelerini javascript nesnelerine dönüştürmeliyiz.
        const items = @Html.Raw(Json.Serialize(Model.Products))
        console.log("items", items);
 
 
     })
-
 
 
     function SendDataToServer() {

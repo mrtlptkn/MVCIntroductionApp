@@ -1,3 +1,4 @@
+using MVCIntroductionApp.Settings;
 using MVCIntroductionApp;
 using MVCIntroductionApp.Middlewares;
 using MVCIntroductionApp.Services;
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<RequestLoggingMiddleware>();
+
+// Uygulamada bir konfigürasyon varsa builder.Services.Configure ile IoC tanýmlarýný yaparýz.
+builder.Services.Configure<SiteSettings>(builder.Configuration.GetSection(SiteSettings.SectionName));
 
 // Servis Register iþlemi
 // DI için yazmamýz þart.
