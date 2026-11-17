@@ -7,23 +7,15 @@
     var tr = new CultureInfo("tr-TR");
 }
 
-<section class="py-4">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <div>
-            <h1 class="h3 mb-1">Ürünler</h1>
-            <p class="text-muted mb-0">
-                @if (string.IsNullOrEmpty(search))
-                {
-                    <span>Toplam @totalCount ürün listeleniyor.</span>
-                }
-                else
-                {
-                    <span><strong>@Model.Count</strong> sonuç bulundu (toplam @totalCount ürün).</span>
-                }
-            </p>
-        </div>
 
-        <form method="get" asp-action="Index" class="w-100" style="max-width: 420px;" role="search">
+<section class="py-4">
+  
+
+<!--Sadece değişecek olan dinamik content id="content" ile güncelledik. Form search kısmını partiview ile hesaplayıp yeniden render edince input event listener remove olduğundan search çalışmıyordu.-->
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+<div></div>
+  <form method="get" asp-action="Index" class="w-100" style="max-width: 420px;" role="search">
             <label for="product-search" class="visually-hidden">Ürün ara</label>
             <div class="input-group">
                 <span class="input-group-text" aria-hidden="true">&#128269;</span>
@@ -41,44 +33,65 @@
                 }
             </div>
         </form>
-    </div>
+      </div>
 
-    @if (Model.Count == 0)
-    {
-        <div class="alert alert-info text-center py-5" role="status">
-            <p class="h5 mb-2">"@search" ile eşleşen ürün bulunamadı.</p>
-            <p class="mb-3">Farklı bir kelime deneyebilir ya da aramayı temizleyebilirsiniz.</p>
-            <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Index", "ProductSample")">Tüm ürünleri göster</a>
-        </div>
-    }
-    else
-    {
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-            @foreach (var product in Model)
-            {
-                var initial = string.IsNullOrWhiteSpace(product.Name) ? "?" : product.Name.Substring(0, 1).ToUpper(tr);
+    <div id="content">
+     @{ await Html.RenderPartialAsync("PartialViews/ProductListPartialView", Model); }
+   </div>
 
-                <div class="col">
-                    <article class="card h-100 shadow-sm border-0">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <div class="rounded-circle bg-primary bg-opacity-10 text-primary fw-bold d-flex align-items-center justify-content-center flex-shrink-0"
-                                     style="width: 48px; height: 48px;" aria-hidden="true">
-                                    @initial
-                                </div>
-                                <h2 class="h5 card-title mb-0 text-truncate" title="@product.Name">@product.Name</h2>
-                            </div>
-
-                            <div class="mt-auto d-flex justify-content-between align-items-center">
-                                <span class="text-muted small">Fiyat</span>
-                                <span class="badge text-danger bg-success-subtle text-success-emphasis fs-6 fw-semibold">
-                                    @(product.Price.HasValue ? product.Price.Value.ToString("C2", tr) : "Fiyat yok")
-                                </span>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            }
-        </div>
-    }
 </section>
+
+
+@section Scripts {
+
+  <script>
+  
+
+  $(document).ready(() => {
+  
+       // input search edildiğinde
+      $('#product-search').on('input', function () {
+        // $(this) -> o anki element
+          const searchValue = $(this).val().trim();
+         
+
+            console.log('searchValue', searchValue);
+
+          if (searchValue.length > 0) {
+
+            $(this).siblings('a').show();
+        
+          } else {
+             $(this).siblings('a').hide();
+          }
+
+          if (searchValue.length > 3) {
+
+           $.ajax({
+                method:'GET',
+                url:`/ProductSample/ProductListPartialView?search=${searchValue}`,
+                contentType:'application/json',
+                success:(response => {
+                  console.log('response',response);
+                  $('#content').empty();
+                  $('#content').html(response);
+                }),
+                error:(err => {
+                  console.log('err',err);
+                })
+            })
+
+            }
+
+      });
+
+  })
+
+
+
+
+
+  </script>
+
+
+}

@@ -38,26 +38,26 @@ namespace MVCIntroductionApp.Controllers
 
     // ürünlerimizi filtreledik ve filtelenmiş halini ekranda göstermek istiyoruz
     // Search işlemini JS ile başlatıp filtelenmiş görseli JS ile hesaplamak yerine bunu mvc bırakıp, hesaplanmış html JS ile ekrana basarak ekranı güncelleyebiliriz.
-    public IActionResult MenuPartialView()
+    [HttpGet]
+    public IActionResult ProductListPartialView(string? search)
     {
+      var allProducts = _productService.GetProducts();
+      var products = allProducts;
 
-      var items = new List<ProductDto>
+      if (!string.IsNullOrWhiteSpace(search))
       {
-        new ProductDto() { Id = 1, Name = "Ürün1", Price = 15.55M },
-        new ProductDto() { Id = 2, Name = "Ürün2", Price = 115.55M },
-             new ProductDto() { Id = 1, Name = "Ürün4", Price = 55.55M },
-        new ProductDto() { Id = 2, Name = "Ürün3", Price = 48.55M },
-               new ProductDto() { Id = 1, Name = "Ürün5", Price = 38.55M },
-        new ProductDto() { Id = 2, Name = "Ürün6", Price = 18.55M },
-               new ProductDto() { Id = 1, Name = "Ürün7", Price = 18.55M },
-        new ProductDto() { Id = 2, Name = "Ürün10", Price = 119.55M },
-               new ProductDto() { Id = 1, Name = "Ürün8", Price = 15.55M },
-        new ProductDto() { Id = 2, Name = "Ürün9", Price = 115.55M },
-               new ProductDto() { Id = 1, Name = "Ürün11", Price = 13.55M },
-        new ProductDto() { Id = 2, Name = "Ürün12", Price = 112.55M }
-      };
+        var term = search.Trim();
+        products = allProducts
+          .Where(p => p.Name != null && p.Name.Contains(term, StringComparison.OrdinalIgnoreCase))
+          .ToList();
+      }
 
-      return PartialView("MenuPartialView", items);
+      ViewData["Title"] = "Ürünler";
+      ViewData["Search"] = search ?? string.Empty;
+      ViewData["TotalCount"] = allProducts.Count;
+
+      // Html Döndürür. 
+      return PartialView("PartialViews/ProductListPartialView", products);
     }
   }
 }
